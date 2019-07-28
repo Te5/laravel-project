@@ -49,12 +49,12 @@ class AdminUsersController extends Controller
         if($file = $request->file('uploadedFile'))
         {
             $fileName = time() . '-'.$file->getClientOriginalName();
-            $file->storeAs('avatars', $fileName);
+            $file->move('images', $fileName);
             $photo = Photo::create(['path'=>$fileName]);
             $input['photo_id'] = $photo->id;
         }
         $input['password'] = bcrypt($request->password);
-        
+
         User::create($input);
 
         return redirect('admin/users');
@@ -80,7 +80,9 @@ class AdminUsersController extends Controller
      */
     public function edit($id)
     {
-        return view('admin.users.edit');
+        $roles = Role::all();
+        $user = User::findOrFail($id);
+        return view('admin.users.edit',compact('user', 'roles'));
     }
 
     /**

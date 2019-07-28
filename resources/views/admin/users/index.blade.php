@@ -25,10 +25,11 @@
     @if($users)	
     <tbody>
 	@foreach ($users as $user)
+
       <tr>
       	<td>{{$user->id}}</td>
-        <td><img src="{{$user->photo->path? $user->photo->path: null}}" width="200"  alt=""></td>
-        <td>{{$user->name}}</td>
+        <td><img src="{{$user->photo->path? $user->photo->path: null}}" height="50"  alt=""></td>
+        <td><a href="{{action('AdminUsersController@edit', $user->id)}}">{{$user->name}}</a></td>
         <td>{{$user->email}}</td>
         <td>{{$user->roles->name}}</td>
         <td>{{$user->is_active? 'Yes': 'No'}}</td>
