@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use App\Role;
+use App\Photo;
 use App\Http\Requests\ValidateUserRequest;
 
 class AdminUsersController extends Controller
@@ -44,7 +45,17 @@ class AdminUsersController extends Controller
     public function store(ValidateUserRequest $request)
     {
         //
-        User::create($request->all());
+        $input = $request->all();
+        if($file = $request->file('uploadedFile'))
+        {
+            $fileName = time() . '-'.$file->getClientOriginalName();
+            $file->storeAs('avatars', $fileName);
+            $photo = Photo::create(['path'=>$fileName]);
+            $input['photo_id'] = $photo->id;
+        }
+        $input['password'] = bcrypt($request->password);
+        
+        User::create($input);
 
         return redirect('admin/users');
         return $request->all();
