@@ -6,7 +6,7 @@
 <div>
 	
 
-	<form action="{{action('AdminUsersController@store')}}" method="POST">
+	<form action="{{action('AdminUsersController@store')}}" method="POST" enctype="multipart/form-data">
 		@csrf
 		<div>
 			<label>Name</label>
@@ -36,7 +36,7 @@
 		<br>
 		<div class="form-group">
 		  <label for="sel1">Role</label>
-		  <select class="form-control @error('role') is-invalid @enderror" id="sel1" name="role">
+		  <select class="form-control @error('role_id') is-invalid @enderror" id="sel1" name="role_id">
 		  	@foreach($roles as $role)
 		    	<option value="{{$role->id}}">{{$role->name}}</option>
 		    @endforeach
@@ -51,13 +51,12 @@
 
 		<div class="form-group">
 		  <label for="sel1">Status</label>
-		  <select class="form-control" id="sel1" name="active">
+		  <select class="form-control" id="sel1" name="is_active">
 		    	<option value="1">Active</option>
 		    	<option value="0">Inactive</option>
 		    
 		  </select>	  
 		</div>	
-		<br>
 		<div>
 			
 		<label>Password</label>
@@ -70,7 +69,15 @@
         @enderror			
 		<br>
 		</div>
+
+		<div>
+			<label for="exampleFormControlFile1">Choose avatar</label>
+			<input type="file" class="form-control-file" id="exampleFormControlFile1" name="uploadedFile">
+		</div>		
+		<br>
+
 		<input type="submit" class="btn btn-primary" value="Create">
 	</form>
+
 </div>
 @endsection()

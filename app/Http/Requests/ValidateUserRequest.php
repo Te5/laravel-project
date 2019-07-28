@@ -29,7 +29,8 @@ class ValidateUserRequest extends FormRequest
             'email' => 'required|unique:users,email',
             'role_id' => 'required',
             'is_active' => 'required',
-            'password' => ['required', 'min:5'],            
+            'password' => ['required', 'min:5'],     
+                   
         ];
     }
 }
