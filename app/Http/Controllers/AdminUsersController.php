@@ -18,7 +18,7 @@ class AdminUsersController extends Controller
     public function index()
     {
         //
-        $users = User::all();
+        $users = User::paginate(10);
 
         return view('admin.users.index', compact('users'));
     }
@@ -94,7 +94,28 @@ class AdminUsersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        //$
+        $input = $request->all();
+        $this->validate($request, [
+            'name' => 'required',
+            'email' => 'required',
+            'role_id' => 'required',
+            'is_active' => 'required',
+            'password' => ['required', 'min:5'],                  
+        ]);
+
+        if($file = $request->file('uploadedFile'))
+        {
+            $fileName = time() . '-'.$file->getClientOriginalName();
+            $file->move('images', $fileName);
+            $photo = Photo::create(['path'=>$fileName]);
+            $input['photo_id'] = $photo->id;
+        }        
+        $user = User::findOrFail($id);
+        $input['password'] = bcrypt($input['password']);
+
+        $user->update($input);
+        return redirect('admin/users');
     }
 
     /**
