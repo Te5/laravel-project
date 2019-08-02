@@ -45,20 +45,14 @@ class AdminUsersController extends Controller
     public function store(ValidateUserRequest $request)
     {
         //
-        $input = $request->all();
-        if($file = $request->file('uploadedFile'))
-        {
-            $fileName = time() . '-'.$file->getClientOriginalName();
-            $file->move('images', $fileName);
-            $photo = Photo::create(['path'=>$fileName]);
-            $input['photo_id'] = $photo->id;
-        }
+
+        $user = new User();
+        $input = $user->saveImageIfProvided($request);
         $input['password'] = bcrypt($request->password);
 
-        User::create($input);
+        $user->create($input);
 
         return redirect('admin/users');
-        return $request->all();
     }
 
     /**
@@ -69,7 +63,7 @@ class AdminUsersController extends Controller
      */
     public function show($id)
     {
-        
+
     }
 
     /**
@@ -82,6 +76,7 @@ class AdminUsersController extends Controller
     {
         $roles = Role::all();
         $user = User::findOrFail($id);
+//        return $user->photo->path;
         return view('admin.users.edit',compact('user', 'roles'));
     }
 
@@ -94,25 +89,17 @@ class AdminUsersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //$
-        $input = $request->all();
+
+
+
         $this->validate($request, [
             'name' => 'required',
             'email' => 'required',
             'role_id' => 'required',
             'is_active' => 'required',
-            'password' => ['required', 'min:5'],                  
         ]);
-
-        if($file = $request->file('uploadedFile'))
-        {
-            $fileName = time() . '-'.$file->getClientOriginalName();
-            $file->move('images', $fileName);
-            $photo = Photo::create(['path'=>$fileName]);
-            $input['photo_id'] = $photo->id;
-        }        
         $user = User::findOrFail($id);
-        $input['password'] = bcrypt($input['password']);
+        $input = $user->saveImageIfProvided($request);
 
         $user->update($input);
         return redirect('admin/users');
