@@ -54,6 +54,7 @@ class User extends Authenticatable
 
         //the function saves image into the images folder and returns modified request data
         $input = $request->all();
+
         /* if user already has a photo, delete it */
         if($this->photo)
         {
@@ -68,6 +69,21 @@ class User extends Authenticatable
             $photo = Photo::create(['path'=>$fileName]);
             $input['photo_id'] = $photo->id;
         }
+        return $input;
+    }
+
+    public function handleEmptyPassword($input)
+    {
+        /* if the password in input is empty, don`t save it
+           The function requires $input to be an array in $request->all() format
+        */
+        if(trim($input['password']) == ''){
+            unset($input['password']);
+        }
+        else{
+            $input['password'] = bcrypt($input['password']);
+        }
+
         return $input;
     }
 }

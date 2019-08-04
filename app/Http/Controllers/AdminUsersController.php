@@ -48,7 +48,7 @@ class AdminUsersController extends Controller
 
         $user = new User();
         $input = $user->saveImageIfProvided($request);
-        $input['password'] = bcrypt($request->password);
+        $input = $user->handleEmptyPassword($input);
 
         $user->create($input);
 
@@ -76,7 +76,7 @@ class AdminUsersController extends Controller
     {
         $roles = Role::all();
         $user = User::findOrFail($id);
-//        return $user->photo->path;
+
         return view('admin.users.edit',compact('user', 'roles'));
     }
 
@@ -100,6 +100,7 @@ class AdminUsersController extends Controller
         ]);
         $user = User::findOrFail($id);
         $input = $user->saveImageIfProvided($request);
+        $input = $user->handleEmptyPassword($input);
 
         $user->update($input);
         return redirect('admin/users');
