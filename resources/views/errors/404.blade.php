@@ -8,6 +8,6 @@
     <title>Document</title>
 </head>
 <body>
-<h1>It`s 404! Something went wrong</h1>
+<h1>Somethign went wrong</h1>
 </body>
 </html>

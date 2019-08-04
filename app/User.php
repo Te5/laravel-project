@@ -71,7 +71,14 @@ class User extends Authenticatable
         }
         return $input;
     }
+    public function deleteUserImage()
+    {
+        if($this->photo)
+        {
+            File::delete(public_path(). $this->photo->path);
+        }
 
+    }
     public function handleEmptyPassword($input)
     {
         /* if the password in input is empty, don`t save it

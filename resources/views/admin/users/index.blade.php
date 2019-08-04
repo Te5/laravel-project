@@ -1,10 +1,12 @@
 @extends('layouts.admin')
 
-
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
 @section('content')
 @if(session()->has('deleted_user'))
-    <p class="alert alert-danger"> {{session('deleted_user')}}</p>
+    <script>toastr.success("User deleted successfully");</script>
     @endif
 
 <h1>Users</h1>
@@ -39,6 +41,7 @@
         <td>{{$user->is_active? 'Yes': 'No'}}</td>
         <td>{{$user->created_at->diffForhumans()}}</td>
         <td>{{$user->updated_at->diffForhumans()}}</td>
+        <td><a href="{{action('AdminUsersController@edit', $user->id)}}"><button type="button" class="btn btn-info">Edit</button></a></td>
           <form action="{{action('AdminUsersController@destroy', $user->id)}}" method="POST">
           @csrf
               @method('DELETE')

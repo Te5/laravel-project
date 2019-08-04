@@ -14,11 +14,11 @@ class UsersCustomSeeder extends Seeder
     {
         //
         DB::table('users')->insert([
-        	'name' => str_random(10),
-        	'email' => str_random(10) . '@gmail.com',
-        	'password' => bcrypt('123'),
-        	'role_id' => 2,
-        	'is_active' => 0,
+        	'name' => 'Admin',
+        	'email' => 'admin@gmail.com',
+        	'password' => bcrypt('admin'),
+        	'role_id' => 1,
+        	'is_active' => 1,
         	'updated_at' => Carbon::now(),
         	'created_at' => Carbon::now(),
 
