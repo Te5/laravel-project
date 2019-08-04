@@ -7,6 +7,7 @@ use App\User;
 use App\Role;
 use App\Photo;
 use App\Http\Requests\ValidateUserRequest;
+use Illuminate\Support\Facades\Session;
 
 class AdminUsersController extends Controller
 {
@@ -15,6 +16,13 @@ class AdminUsersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct()
+    {
+        $this->middleware('admin');
+    }
+
+
     public function index()
     {
         //
@@ -115,5 +123,9 @@ class AdminUsersController extends Controller
     public function destroy($id)
     {
         //
+        User::findOrFail($id)->delete();
+        session()->flash('deleted_user','User deleted successfully');
+        return redirect('admin/users');
+
     }
 }

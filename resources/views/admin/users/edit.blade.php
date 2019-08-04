@@ -80,8 +80,15 @@
                         @enderror
                         <br>
                     </div>
-					<input type="submit" class="btn btn-primary" value="Update">
+					<input type="submit" class="btn btn-primary col-sm-2" value="Update">
 				</form>
+
+                <form action="{{action('AdminUsersController@destroy', $user->id)}}" method="POST" class="col-sm-2">
+                    @csrf
+                    @method('DELETE')
+                    <td><input type="submit" class="btn btn-danger" value="Delete user"></td>
+                </form>
 		</div>
+
 </div>
 @endsection()

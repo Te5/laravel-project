@@ -3,13 +3,15 @@
 
 
 @section('content')
-
+@if(session()->has('deleted_user'))
+    <p class="alert alert-danger"> {{session('deleted_user')}}</p>
+    @endif
 
 <h1>Users</h1>
 
 <table class="table table-striped">
     <div id="app">
-      
+
     </div>
     <thead>
       <tr>
@@ -24,7 +26,7 @@
       </tr>
     </thead>
 
-    @if($users)	
+    @if($users)
     <tbody>
 	@foreach ($users as $user)
 
@@ -37,8 +39,14 @@
         <td>{{$user->is_active? 'Yes': 'No'}}</td>
         <td>{{$user->created_at->diffForhumans()}}</td>
         <td>{{$user->updated_at->diffForhumans()}}</td>
-      </tr>    
-	@endforeach      
+          <form action="{{action('AdminUsersController@destroy', $user->id)}}" method="POST">
+          @csrf
+              @method('DELETE')
+              <td><input type="submit" class="btn btn-danger" value="Delete"></td>
+          </form>
+
+      </tr>
+    @endforeach
     </tbody>
   	</table>
 
